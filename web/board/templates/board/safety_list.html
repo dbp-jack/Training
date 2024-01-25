@@ -1,0 +1,66 @@
+<html lang="ko-kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elsafty</title>
+</head>
+<body>
+{% extends 'page.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'list.css' %}">
+
+{% block title %}
+<h1 id="title">안전점검일지</h1>
+{% endblock title %}
+
+{% block content %}
+<nav class="navbar bg-light">
+    <div class="container-fluid">
+        <div class="solt-1">
+            <label class="blockquote" for="mgr_pw">총 사건{{total}}건   </label>
+            <label class="lead" for="mgr_pw">   양호 {{count1}}건  </label>
+            <label class="lead" for="mgr_pw">   주의 {{count2}}건</label>
+            <label class="lead" for="mgr_pw">   심각 {{count2}}건</label>
+        </div>
+
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="보고자 검색" aria-label="보고자">
+        <button class="btn btn-outline-success" type="submit">검색</button>
+      </form>
+    </div>
+
+</nav>
+<div id="output">
+    <table class="table table-hover" id="myTable" border="1" cellspacing="0" summary="안전점검일지 목록">
+    <colgroup>
+        <col width = "200">
+        <col width = "200">
+        <col width = "80">
+        <col width = "50">
+    </colgroup>
+    <thead>
+        <th>생성일</th>
+        <th>안전점검구역</th>
+        <th>안전상태</th>
+        <th>보고자</th>
+    </thead>
+    {% for safety in safety_list  %}
+    <tr class="link-dark" onclick="redirectToSafetyDetail('{{safety.id}}')">
+    <td>{{safety.create_date}}</td>
+    <td>{{safety.scl_area}}</td>
+    <td>{{safety.scl_status}}</td> 
+    <td>{{safety.writer}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    <a href="{% url 'board:safety_write' %}" class="btn btn-primary" type="button">작성</a>
+</div>
+
+<script>
+    function redirectToSafetyDetail(safetyId) {
+        var url = "/board/safety_detail/" + safetyId;
+        window.location.href = url; }
+</script>
+{% endblock %}
+</body>
+</html>

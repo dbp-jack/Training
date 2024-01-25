@@ -1,0 +1,63 @@
+{% extends 'page.html' %}
+{% block title %}
+<h1 id="title">조 편성</h1>
+{% endblock %}
+
+{% block content %}
+
+<!-- Display the form -->
+<form method="post" >
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+    <button type="submit" class="btn btn-primary">근무편성</button>
+</form>
+<!-- Display the list of groups -->
+<table class="table table-hover" id="myTable" border="1" cellspacing="0" summary="근무편성표 목록">
+    <colgroup>
+        <col width="50">
+        <col width="50">
+        <col width="20">
+        <col width="100">
+        <col width="100">
+        <col width="100">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>직원1</th>
+            <th>직원2</th>
+            <th>조</th>
+            <th>담당업무</th>
+            <th>현장위치</th>
+            <th>삭제</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if object_list %}
+            {% for group in object_list %}
+            <tr>
+                <td>{{ group.employee1.emp_name }}</td>
+                <td>{{ group.employee2.emp_name }}</td> 
+                <td>{{ group.employee1.id }}, {{ group.employee2.id }}조</td>
+                <td>{{ group.employee1.work }}, {{ group.employee2.work }}</td>
+                <td>{{ group.employee1.work_area }}, {{ group.employee2.work_area }}</td>
+                <td>
+                    <form action="{% url 'board:groups_delete' group.pk %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="5">No groups available.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}
+

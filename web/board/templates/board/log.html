@@ -1,0 +1,53 @@
+<html lang="ko-kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elsafe-Q 일일기록</title>
+</head>
+<body>
+    
+</body>
+</html>
+{% extends 'page.html' %}
+
+{% block title %}
+<h1 id="title">Login/Logout Log</h1>
+{% endblock title %}
+
+{% block content %}
+<table class="table table-hover" id="myTable" border="1" cellspacing="0" summary="로그기록">
+    <colgroup>
+        <col width = "50">
+        <col width = "50">
+        <col width = "30">
+        <col width = "50">
+        <col width = "300">
+    </colgroup>
+    <thead>
+        <tr>
+            <th>관리자</th>
+            <th>ID</th>
+            <th>직책</th>
+            <th>관리기록</th>
+            <th>기록시간</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.login.user.last_name }} {{ log.login.user.first_name }}</td>
+            <td>{{ log.login.user.username }}</td>
+            <td>{{ log.login.user.position }}</td>
+            <td>{{ log.duration }}</td>
+            <td>{{ log.login.date }} - {{ log.logout.date }} </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No login/logout logs found.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'register.css' %}">

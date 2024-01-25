@@ -1,0 +1,7 @@
+.grid1{
+  display:grid;
+  grid-template-columns: 1fr 5fr;
+}
+.link-dark{
+  text-decoration-line : none;
+}

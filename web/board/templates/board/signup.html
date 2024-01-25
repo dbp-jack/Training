@@ -1,0 +1,67 @@
+<html lang="ko-kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only 부트스트랩 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <title>Elsafe-Q</title>
+</head>
+<body>
+<h1>회원가입</h1>
+
+<form method="POST">
+{% csrf_token %}
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label" for="name">관리자</label>
+    <div class="col-sm-10">
+    <input type="text" class="form-control" name="last_name" placeholder="성 입력" required>
+    <input type="text" class="form-control" name="first_name" placeholder="이름 입력" required>
+    </div>
+
+    <label class="col-sm-2 col-form-label" for="position">직책</label>
+    <select class="form-select" aria-label="Default select example" name="position"  required>
+    <option value="" selected>---------</option>
+    <option value="감독">감독</option>
+    <option value="관리자">관리자</option>
+    <option value="반장">반장</option>
+    </select>
+
+    <label class="col-sm-2 col-form-label" for="id_edmil">이메일</label>
+    <div class="col-sm-10">
+    <input type="email" class="form-control" name="email"  placeholder="이메일 입력"required>
+    </div>
+    
+    <label class="col-sm-2 col-form-label" for="id_username">아이디</label>
+    <div class="col-sm-10">
+    <input type="text" class="form-control" name="username"  placeholder="아이디 입력"required>
+    </div>
+
+    <label class="col-sm-2 col-form-label" for="id_password1">비밀번호</label>
+    <div class="col-sm-10">
+    <input type="password" class="form-control" name="password1" autocomplete="new-password" placeholder="비밀번호 입력" required>
+    </div>
+
+    <label class="col-sm-2 col-form-label" for="id_password2" >비밀번호 확인</label>
+    <div class="col-sm-10">
+    <input type="password" class="form-control" name="password2" autocomplete="new-password" placeholder="비밀번호 확인" required>
+    </div>
+
+    <label class="col-sm-2 col-form-label" for="id_address">상세주소</label>
+    <div class="col-sm-10">
+    <input type="text" class="form-control" name="address" maxlength="200" placeholder="상세주소 입력" required>
+    </div>
+
+    <label class="col-sm-2 col-form-label" for="id_call">전화번호</label>
+    <div class="col-sm-10">
+    <input type="text" class="form-control" name="call" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}"
+        maxlength="13" placeholder="전화번호 입력" required>
+    </div>
+    <div id ="button">
+    <input class="btn btn-primary" type="submit" value="관리자등록">
+    <a href="{% url 'board:login' %}" class="btn btn-primary" type="button">이전</a>
+    </div>
+</form>
+</body>
+</html>

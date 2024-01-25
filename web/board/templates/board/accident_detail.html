@@ -1,0 +1,37 @@
+{% extends 'page.html' %}
+
+{% block title %}
+<h1 id="title">사고보고</h1>
+{% endblock title %}
+
+{% block content %}
+{% if post %}
+{{user.username}}님 환영합니다. <br>
+사고구역 {{post.ac_area}} <br>
+이미지 <img src="{{ post.img.url }}" alt="Post Image" style="width:500px; height:400px;"><br> <br>
+조치상태 {{post.ac_status}} <br>
+사고내용 {{post.ac_cont}}<br>
+
+<div>
+{% if request.user == post.writer %}
+<form method="POST" action="{% url 'board:accident_delete' pk=post.id %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger" onclick="이 글을 삭제하시겠습니까 ?">삭제</button>
+</form>
+<a href="{% url 'board:accident_update' pk=post.id %}" class="btn btn-info" type="button">수정</a>
+{% endif %}
+<a href="{% url 'board:accident_list' %}" class="btn btn-light" type="button">목록</a>
+</div>
+<form method="POST">
+  {% csrf_token %}
+  {{ replayForm.as_p }}
+  <input class="btn btn-primary" type="submit" value="댓글">
+</form>
+
+    {% if post.replay_set.all %}
+        {% for replay in post.replay_set.all %}
+            {{ replay.contents }} {{ replay.writer }}<br>    
+        {% endfor %}
+    {% endif %}
+{% endif %}
+{% endblock %}

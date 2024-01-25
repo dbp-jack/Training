@@ -1,0 +1,37 @@
+{% extends 'page.html' %}
+
+{% block title %}
+<h1 id="title">안전점검일지</h1>
+{% endblock title %}
+
+{% block content %}
+{% if safety %}
+{{ user.username }}님 환영합니다. <br>
+안전점검구역 {{ safety.scl_area }} <br>
+안전상태 {{ safety.scl_status }} <br>
+이미지 <img src="{{ safety.img.url }}" alt="Safety Image" style="width:500px; height:400px;"><br>
+안전점검내용 {{ safety.scl_cont }}<br>
+
+{% if request.user == safety.writer %}
+<form method="POST" action="{% url 'board:safety_delete' pk=safety.id %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger" onclick="return confirm('이 글을 삭제하시겠습니까?')">삭제</button>
+</form>
+<a href="{% url 'board:safety_update' pk=safety.id %}" class="btn btn-info" type="button">수정</a>
+{% endif %}
+<a href="{% url 'board:safety_list' %}" class="btn btn-light" type="button">목록</a>
+
+<form method="POST" action="{% url 'board:safety_detail' pk=safety.id %}">
+  {% csrf_token %}
+  {{ replayForm.as_p }}
+  <input class="btn btn-primary" type="submit" value="댓글">
+</form>
+
+{% if safety.replay_set.all %}
+{% for replay in safety.replay_set.all %}
+{{ replay.contents }} {{ replay.writer }}<br>
+{% endfor %}
+{% endif %}
+
+{% endif %}
+{% endblock %}

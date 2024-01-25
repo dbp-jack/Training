@@ -1,0 +1,63 @@
+{% extends 'page.html' %}
+{% block title %}
+<h1 id="title">작업자상황판</h1>
+{% endblock title %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'register.css' %}">
+{{user.username}}님 환영합니다. <br>
+관리자 정보(수정, 삭제) 및 관리자 목록(상단 회사명)<br>
+(그리드 분류 - 관리자 정보, 관리자 목록)
+<div class="sign_up">
+<!-- Detail View -->
+<div class="input">
+    <table class="table table-hover" border="1" cellspacing="0" summary="관리자 목록">
+        <colgroup>
+        <col scope="col" width = "5">
+        <col scope="col" width = "50">
+        <col scope="col" width = "100">
+        <col scope="col" width = "300">
+        </colgroup>
+    
+        <thead>
+        <th></th>
+        <th>관리자</th>
+        <th>아이디</th>
+        <th>이메일</th>
+        </thead>
+    
+        {% for preference in preferences %}
+        <tr class="link-dark" onclick="redirectToPreferences('{{preference.id}}')">
+        <td><input type="checkbox" id="check"></td>
+        <td>{{ preference.last_name }}{{ preference.first_name }}</td>
+        <td>{{ preference.username }}</td>
+        <td>{{ preference.email }}</td>
+        </tr>
+        {% endfor %}
+        </table>
+</div>
+
+<div class="output">
+{{manage.first_name}}
+<div class="form-group">
+    <input type="text" id="cmp" name="cmp" placeholder="관리자 검색"><br>
+</div>
+{% if selected_data %}
+<p>name : {{ selected_data.last_name }}{{ selected_data.first_name }}</p>
+<p>username : {{ selected_data.username }}</p>
+<p>position : {{ selected_data.position }}</p>
+<p>address : {{ selected_data.address }}</p>
+<p>email : {{ selected_data.email }}</p>
+<p>call : {{ selected_data.call }}</p>
+{% else %}
+  <p>No data selected.</p>
+{% endif %}
+</div>
+</div>
+<script>
+    function redirectToPreferences(preferenceId) {
+        var url = "/board/preferences/" + preferenceId;
+        window.location.href = url; }
+</script>
+{% endblock %}

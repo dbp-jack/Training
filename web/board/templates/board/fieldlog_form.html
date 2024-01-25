@@ -1,0 +1,69 @@
+{% extends 'page.html' %}
+<html lang="ko-kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elsafe-Q 작업현장일지</title>
+</head>
+<body>
+{% block title %}
+    <h1 id="title">작업현장일지</h1>
+{% endblock title %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'register.css' %}">
+    <div class="sign_up">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="input">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="btn btn-primary" type="submit" value="작성">
+            </div>
+        </form>
+
+        <div class="output">
+            <table class="table table-hover" id="myTable" border="1" cellspacing="0" summary="사고보고 목록">
+                <colgroup>
+                    <col width="200">
+                    <col width="200">
+                    <col width="100">
+                    <col width="50">
+                    <col width="200">
+                </colgroup>
+                <thead>
+                    <th>공사구역</th>
+                    <th>작업내역</th>
+                    <th>작성자</th>
+                    <th>작성자ID</th>
+                    <th>생성일</th>
+                </thead>
+                <tbody>
+                    {% if object_list %}
+                        {% for fieldlog in object_list %}
+                        <tr class="link-dark" onclick="redirectToFieldlogDetail('{{fieldlog.id}}')">
+                                <td>{{ fieldlog.fl_area }}</td>
+                                <td>{{ fieldlog.fl_status }}</td>
+                                <td>{{ fieldlog.writer.last_name }}{{ fieldlog.writer.first_name }}</td>
+                                <td>{{ fieldlog.writer }}</td>
+                                <td>{{ fieldlog.create_date }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">No field_log found.</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+<script>
+    function redirectToFieldlogDetail(FieldlogId) {
+        var url = "/board/fieldlog_detail/" + FieldlogId;
+        window.location.href = url; }
+</script>
+{% endblock %}
+</body>
+</html>

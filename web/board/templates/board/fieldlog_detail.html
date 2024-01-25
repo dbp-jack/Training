@@ -1,0 +1,44 @@
+{% extends 'page.html' %}
+{% block title %}
+<h1 id="title">작업현장일지</h1>
+{% endblock title %}
+
+{% block content %}
+{% if fieldlog %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'register.css' %}">
+{{user.username}}님 환영합니다. <br>
+<div class="sign_up">
+<div class="input">
+이미지 <img src="{{ fieldlog.img.url }}"  style="width:800px; height:600px;"  alt="fieldlog Image"><br>
+</div>
+<div class="output">
+공사구역 {{fieldlog.fl_area}} <br>
+작업내역 {{fieldlog.fl_status}} <br>
+생성일 {{fieldlog.create_date}} <br>
+일지내용 {{fieldlog.fl_cont}}<br>
+
+{% if request.user == fieldlog.writer %}
+<form method="POST" action="{% url 'board:fieldlog_delete' pk=fieldlog.id %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger" onclick="return confirm('이 글을 삭제하시겠습니까?')">삭제</button>
+</form>
+<a href="{% url 'board:fieldlog_update' pk=fieldlog.id %}" class="btn btn-info" type="button">수정</a>
+{% endif %}
+<a href="{% url 'board:fieldlog_write' %}" class="btn btn-light" type="button">목록</a>
+
+<form method="POST" action="{% url 'board:fieldlog_detail' pk=fieldlog.id %}">
+    {% csrf_token %}
+    {{ replayForm.as_p }}
+    <input class="btn btn-primary" type="submit" value="댓글">
+</form>
+
+  {% if fieldlog.replay_set.all %}
+    {% for replay in fieldlog.replay_set.all %}
+      {{ replay.contents }} {{ replay.writer }}<br>
+    {% endfor %}
+  {% endif %}
+</div>
+</div>
+{% endif %}
+{% endblock %}

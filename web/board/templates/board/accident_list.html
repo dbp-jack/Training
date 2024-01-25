@@ -1,0 +1,67 @@
+<html lang="ko-kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elsaf</title>
+</head>
+<body>
+{% extends 'page.html' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'list.css' %}">
+
+{% block title %}
+<h1 id="title">사고보고</h1>
+{% endblock title %}
+
+{% block content %}
+<nav class="navbar bg-light">
+    <div class="container-fluid">
+        <div class="solt-1">
+            <label class="blockquote" for="mgr_pw">총 사건{{total}}건   </label>
+            <label class="lead" for="mgr_pw">   사고현황{{count1}}건  </label>
+            <label class="lead" for="mgr_pw">   조치현황{{count2}}건</label>
+        </div>
+
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="사고처리자 입력" aria-label="사고처리자">
+        <button class="btn btn-outline-success" type="submit">검색</button>
+      </form>
+    </div>
+
+</nav>
+<div id="output">
+    <table class="table table-hover" id="myTable" border="1" cellspacing="0" summary="사고보고 목록">
+    <colgroup>
+        <col width = "200">
+        <col width = "200">
+        <col width = "200">
+        <col width = "80">
+        <col width = "50">
+    </colgroup>
+    <thead>
+        <th>생성일</th>
+        <th>수정일</th>
+        <th>사고구역</th>
+        <th>조치상테</th>
+        <th>사고처리자</th>
+    </thead>
+    {% for accident in accident_list  %}
+    <tr class="link-dark" onclick="redirectToAccidentDetail('{{accident.id}}')">
+    <td>{{accident.create_date}}</td>
+    <td>{{accident.update_date}}</td>
+    <td>{{accident.ac_area}}</td>
+    <td>{{accident.ac_status}}</td> 
+    <td>{{accident.writer}}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    <a href="{% url 'board:accident_write' %}" class="btn btn-primary" type="button">작성</a>
+</div>
+<script>
+    function redirectToAccidentDetail(accidentId) {
+        var url = "/board/accident_detail/" + accidentId;
+        window.location.href = url; }
+</script>
+{% endblock %}
+</body>
+</html>

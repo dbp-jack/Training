@@ -1,0 +1,16 @@
+2023-06-27 15:11:04,453 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2023-06-27 15:11:06,171 [WARNING] django.request: Not Found: /
+2023-06-27 15:11:06,264 [WARNING] django.request: Not Found: /favicon.ico
+2023-06-27 15:11:13,747 [ERROR] django.request: Internal Server Error: /board/login/
+Traceback (most recent call last):
+  File "C:\Users\elssen\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\elssen\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "C:\Users\elssen\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view board.views.Login didn't return an HttpResponse object. It returned None instead.
+2023-06-27 15:11:52,266 [INFO] django.utils.autoreload: C:\Users\elssen\Desktop\보드\web\board\views.py changed, reloading.
+2023-06-27 15:11:52,768 [INFO] django.utils.autoreload: Watching for file changes with StatReloader
+2023-06-27 15:11:59,246 [INFO] django.utils.autoreload: C:\Users\elssen\Desktop\보드\web\web\settings.py changed, reloading.

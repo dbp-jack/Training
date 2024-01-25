@@ -1,0 +1,88 @@
+{% extends 'page.html' %}
+<html lang="ko-kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elsafe-Q 직원등록</title>
+</head>
+
+<body>
+{% block title %}
+<h1 id="title">직원등록</h1>
+{% endblock title %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'register.css' %}">
+    <div class="sign_up">
+        <div class="input">
+            <label class="blockquote" for="mgr_pw">총 직원{{count}}명   </label>
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="btn btn-primary" type="submit" value="등록">
+            </form>
+        </div>
+
+<div class="output">
+    {% if employee %}
+        이미지 : <img src="{{ employee.img.url }}" alt="Employee Image" style="width:500px; height:400px;"><br> <br>
+        회사 : {{ employee.cmp }} <br>
+        직책: {{ employee.position }} <br>
+        담당구역: {{ employee.work_area }}<br>
+    <form method="POST" action="{% url 'board:employee_delete' pk=employee.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" onclick="이 글을 삭제하시겠습니까 ?">삭제</button>
+        <a href="{% url 'board:employee_update' pk=employee.id %}" class="btn btn-info" type="button">수정</a>
+    </form>
+    {% else %}
+        <p>No data selected.</p>
+    {% endif %}
+</div>
+
+</div>
+<div class="table-container" style="width:100%; height:300px; overflow:auto">
+<table class="table table-hover" id="myTable" border="1" cellspacing="0" summary="직원 목록">
+    <colgroup>
+        <col width="50">
+        <col width="80">
+        <col width="80">
+        <col width="80">
+        <col width="100">
+    </colgroup>
+    <thead>
+        <th>회사</th>
+        <th>직원명</th>
+        <th>직책</th>
+        <th>담당구역</th>
+        <th>작업일</th>
+    </thead>
+    <tbody>
+        {% if object_list %}
+        {% for employee in object_list %}
+        <tr class="link-dark" onclick="redirectToEmployeeDetail('{{ employee.id }}')" >
+            <td>{{ employee.cmp }}</td>
+            <td>{{ employee.emp_name }}</td>
+            <td>{{ employee.position }}</td>
+            <td>{{ employee.work_area }}</td>
+            <td>{{ employee.start_time }} - {{ employee.end_time }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">직원정보</td>
+        </tr>
+        {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+</div>
+<script>
+    function redirectToEmployeeDetail(employeeId) {
+        var url = "/board/employee_detail/" + employeeId;
+        window.location.href = url;
+    }
+</script>
+{% endblock %}
+</body>
+</html>

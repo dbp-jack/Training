@@ -1,0 +1,14 @@
+{% extends 'page.html' %}
+{% block title %}
+<h1 id="title">안전점검일지</h1>
+{% endblock title %}
+
+{% block content %}
+    <!-- Your dashboard content goes here -->
+{{user.username}}님 환영합니다.
+<form action="" method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="등록">
+</form>
+{% endblock %}

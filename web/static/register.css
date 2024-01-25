@@ -1,0 +1,42 @@
+/* 등록 - 관리자, 직원 */
+body{margin: 10;}
+h1{
+  font-size:45px;
+  border-bottom: 5px solid black;
+  padding : 5px;    }
+  
+/* .class */
+.sign_up{
+    display:grid;
+    grid-template-columns: 1fr 1fr; }
+.emp{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.input{
+  border-right: 2px solid black;
+  padding : 20px;   }
+
+.output{  padding : 10px; }
+
+.put{  
+  border-left: 2px solid black;
+  padding : 10px; }
+
+/* #id */
+#button{
+    position : relative;
+    left : 300px;
+}
+
+#img{
+  width: 200px;
+  height: 200px;
+}
+
+.dashboard{
+  display:grid;
+  grid-template-columns: 1fr 1fr; }
+.table-container{
+  border-right: 2px solid black;
+  padding : 20px;   }

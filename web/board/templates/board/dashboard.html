@@ -1,0 +1,134 @@
+{% extends 'page.html' %}
+<html lang="ko-kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elsafe-Q 작업자상황판</title>
+</head>
+<body>
+{% block title %}
+<h1 id="title">작업자상황판</h1>
+{% endblock title %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'register.css' %}">
+
+{{user.username}}님 환영합니다.
+<div class="sign_up">
+    <div class="input">
+        <div class="table-container" style="width:100%; height:800px; overflow:auto">
+        <table class="table table-hover" id="myTable" border="1" cellspacing="0" summary="직원 목록">
+            <colgroup>
+                <col width="150">
+                <col width="50">
+                <col width="40">
+                <col width="40">
+                <col width="40">
+                <col width="40">
+                <col width="40">
+                <col width="40">
+            </colgroup>
+
+            <thead>
+                <th ><select class="form-select" id="workAreaSelect"  >
+                    <option selected>담당구역</option>
+                    {% for dashboard in dashboards %}
+                        <option value="{{ dashboard.work_area }}">{{ dashboard.work_area }}</option>
+                    {% endfor %}
+                </select></th>
+                <th ><select class="form-select" id="empNameSelect"  >
+                    <option selected>직원</option>
+                    {% for dashboard in dashboards %}
+                        <option value="{{ dashboard.emp_name }}">{{ dashboard.emp_name }}</option>
+                    {% endfor %}
+                </select></th>
+                <th ><select class="form-select" id="positionSelect"  >
+                    <option selected>직책</option>
+                    {% for dashboard in dashboards %}
+                        <option value="{{ dashboard.position }}">{{ dashboard.position }}</option>
+                    {% endfor %}
+                </select></th>
+                <th>출입여부</th>
+                <th>안전모</th>
+                <th>안전고리</th>
+                <th>워치</th>
+                <th>안전도</th>
+            </thead>
+            <tbody id="filteredTableBody">
+                {% for dashboard in dashboards %}
+                <tr class="link-dark" onclick="redirectTodashboard('{{ dashboard.id }}')">
+                    <td>{{ dashboard.work_area }}</td>
+                    <td>{{ dashboard.emp_name }}</td>
+                    <td>{{ dashboard.position }}</td>
+                    <td>ㅁ</td>
+                    <td>ㄴ</td>
+                    <td>ㅇ</td>
+                    <td>ㄹ</td>
+                    <td>ㅎ</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">직원정보</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <div class="output">
+        <div class="card" style="width: 19rem;">
+        {% if selected_data %}
+            <img src="{{ selected_data.img.url}}" class="card-img-top" alt="employee Image" > <br>
+            <div class="card-body">
+            <h5 class="card-title">{{ selected_data.emp_name }}</h5>
+            <p class="card-text"> 직책 : {{ employee.position }} 작업 :  {{ selected_data.work }} </p>
+            <p class="card-text"> 전화번호 : {{ selected_data.emp_call }} </p>
+            <p class="card-text"> 작업일 : {{ selected_data.start_time }} - {{ employee.end_time }} </p>
+            <p class="card-text"> 단말기 : {{ selected_data.serial_num }} </p>
+        {% else %}
+            <p>No data selected.</p>
+        {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    function filterTableRows() {
+        var workAreaValue = document.getElementById('workAreaSelect').value;
+        var empNameValue = document.getElementById('empNameSelect').value;
+        var positionValue = document.getElementById('positionSelect').value;
+        var tableRows = document.querySelectorAll('#myTable tbody tr');
+
+        tableRows.forEach(function(row) {
+            var workAreaCell = row.querySelector('td:nth-child(1)');
+            var empNameCell = row.querySelector('td:nth-child(2)');
+            var positionCell = row.querySelector('td:nth-child(3)');
+
+            if (
+                (workAreaValue === '담당구역' || workAreaCell.textContent === workAreaValue) &&
+                (empNameValue === '직원' || empNameCell.textContent === empNameValue) &&
+                (positionValue === '직책' || positionCell.textContent === positionValue)
+            ) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Add event listeners to select elements
+    document.getElementById('workAreaSelect').addEventListener('change', filterTableRows);
+    document.getElementById('empNameSelect').addEventListener('change', filterTableRows);
+    document.getElementById('positionSelect').addEventListener('change', filterTableRows);
+
+    // Function to redirect to dashboard
+    function redirectTodashboard(dashboardId) {
+        var url = "/board/dashboard/" + dashboardId;
+        window.location.href = url;
+    }
+
+</script>
+{% endblock %}
+</body>
+</html>
